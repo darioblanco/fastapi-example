@@ -1,7 +1,7 @@
 # fastapi-example
 
-![code](https://github.com/darioblanco/fastapi-example/actions/workflows/code.yml/badge.svg)
-[![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
+[![JSON](https://github.com/darioblanco/fastapi-example/actions/workflows/_json.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/_json.yaml)
+[![YAML](https://github.com/darioblanco/fastapi-example/actions/workflows/_yaml.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/_yaml.yaml)
 
 This repository is a template to bootstrap a FastAPI service using PostgreSQL.
 You can use this repository as an example of how to structure a Standalone API service
