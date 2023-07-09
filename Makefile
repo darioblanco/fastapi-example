@@ -50,15 +50,17 @@ help: ## list available commands
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 init: ## verify that all the required commands are already installed
-	@function cmd { \
-		if ! command -v "$$1" &>/dev/null ; then \
-			echo "error: missing required command in PATH: $$1" >&2 ;\
-			return 1 ;\
-		fi \
-	} ;\
-	cmd python ;\
-	cmd poetry ;\
-	cmd prettier;\
+	@if [ -z "$$CI" ]; then \
+		function cmd { \
+			if ! command -v "$$1" &>/dev/null ; then \
+				echo "error: missing required command in PATH: $$1" >&2 ;\
+				return 1 ;\
+			fi \
+		} ;\
+		cmd python ;\
+		cmd poetry ;\
+		cmd prettier;\
+	fi
 
 install: init ## install project dependencies and commit hooks
 	poetry install
