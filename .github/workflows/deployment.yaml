@@ -1,0 +1,31 @@
+name: Deployment
+on:
+  workflow_dispatch:
+    inputs:
+      author:
+        description: The owner of the deployment change
+        required: false
+        default: darioblanco
+      description:
+        description: The information about the deployment change
+        required: false
+        default: Manual deployment in github actions
+      env:
+        description: The environment where to deploy
+        required: false
+        default: test
+      ref:
+        description: The github ref to deploy
+        required: false
+        default: main
+jobs:
+  from-dispatch:
+    uses: darioblanco/.github/.github/workflows/deployment.yaml@v1
+    with:
+      author: ${{ github.event.inputs.author }}
+      description: ${{ github.event.inputs.description }}
+      env: ${{ github.event.inputs.env }}
+      name: fastapi-example
+      ref: ${{ github.event.inputs.ref }}
+    secrets:
+      repoAccessToken: ${{ secrets.REPO_ACCESS_TOKEN }}
