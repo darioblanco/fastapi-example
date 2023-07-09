@@ -66,7 +66,6 @@ install: init ## install project dependencies and commit hooks
 	poetry install
 	@if [ -z "$$CI" ]; then \
 		poetry run pre-commit install ; \
-		poetry run pre-commit install --hook-type commit-msg ; \
 	fi
 
 lint: init ## lint syntax code (isort and black)
