@@ -1,0 +1,26 @@
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.11-slim
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Install pip and poetry
+RUN pip install -U pip poetry
+
+# Copy only requirements to cache them in docker layer
+COPY poetry.lock pyproject.toml ./
+
+# Project initialization:
+RUN poetry config virtualenvs.create false \
+  && poetry install --no-interaction --no-ansi
+
+# Copy all files
+COPY . .
+
+# Define the entrypoint script
+COPY container/entrypoint.sh /entrypoint.sh
+
+# Ensure the entrypoint script is executable
+RUN chmod +x /entrypoint.sh
+
+# Define the script to run at container startup
+ENTRYPOINT ["/entrypoint.sh"]

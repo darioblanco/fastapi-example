@@ -1,0 +1,56 @@
+[
+  {
+    "id": "b8a69a5b-63f0-4c67-9b63-779b76543e73",
+    "name": "Hubble Space Telescope",
+    "description": "Space telescope that has revolutionized astronomy since its launch in 1990",
+    "launch_date": "1990-04-24",
+    "active": true,
+    "avg_rating": 9.7,
+    "launch_site_id": "7f6b0e1d-6a4a-4d8e-9c68-f4a6a0bf4896"
+  },
+  {
+    "id": "38a3b894-6ace-47ea-a9b0-c585ea941533",
+    "name": "James Webb Space Telescope",
+    "description": "Space telescope set to be successor to Hubble",
+    "launch_date": "2021-12-25",
+    "active": true,
+    "avg_rating": 9.5,
+    "launch_site_id": "da2752ca-aebd-4fb9-8da9-5d69965d7bf9"
+  },
+  {
+    "id": "1f4b4a25-37df-4474-9f77-5073d2eb2e8c",
+    "name": "Chandra X-ray Observatory",
+    "description": "Flagship-class space observatory launched on STS-93 by NASA",
+    "launch_date": "1999-07-23",
+    "active": true,
+    "avg_rating": 9.2,
+    "launch_site_id": "7f6b0e1d-6a4a-4d8e-9c68-f4a6a0bf4896"
+  },
+  {
+    "id": "a6e0f2f2-181e-4e2e-bf4e-54f8e65a345e",
+    "name": "Starlink Group 4-9",
+    "description": "One of the many Starlink groups of satellites launched by SpaceX for global broadband coverage",
+    "launch_date": "2023-04-01",
+    "active": true,
+    "avg_rating": 8.9,
+    "launch_site_id": "7f6b0e1d-6a4a-4d8e-9c68-f4a6a0bf4896"
+  },
+  {
+    "id": "9ee5fc19-f26e-4a6d-982e-208cfb5dc4f4",
+    "name": "Perseverance Rover",
+    "description": "Car-sized rover designed to explore Mars as part of NASA's Mars 2020 mission",
+    "launch_date": "2020-07-30",
+    "active": true,
+    "avg_rating": 9.8,
+    "launch_site_id": "7f6b0e1d-6a4a-4d8e-9c68-f4a6a0bf4896"
+  },
+  {
+    "id": "9e885d9e-1a95-4f9e-9a8f-3d8b738654a7",
+    "name": "Galileo Full Operational Capability Flight 4",
+    "description": "Part of the Galileo navigation system put in place by the European Union",
+    "launch_date": "2014-12-28",
+    "active": true,
+    "avg_rating": 8.7,
+    "launch_site_id": "da2752ca-aebd-4fb9-8da9-5d69965d7bf9"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "0ccda2c1-2e59-469d-8531-3400a063e781",
+    "name": "Kennedy Space Center",
+    "description": "NASA's primary launch center of human spaceflight. Located on the east coast of Florida, KSC is adjacent to Cape Canaveral Space Force Station (CCSFS).",
+    "country": "USA",
+    "address": "Florida, USA",
+    "agency_ids": [
+      "3d2bfdab-aca1-4b0c-8f62-4867aad0173f",
+      "4d3fe717-fd2f-44f2-aa8e-8052f261c094"
+    ],
+    "avg_rating": 4.8
+  },
+  {
+    "id": "d765994a-354a-4e4f-8e3a-d5b3b59e92c1",
+    "name": "Baikonur Cosmodrome",
+    "description": "The world's first and largest operational space launch facility located in southern Kazakhstan.",
+    "country": "Kazakhstan",
+    "address": "Baikonur, Kazakhstan",
+    "agency_ids": ["08d21955-51b6-44e5-83d3-adebb66e7ebd"],
+    "avg_rating": 4.5
+  },
+  {
+    "id": "27f7fe64-205c-48a9-8420-8a2036fa056c",
+    "name": "Guiana Space Centre",
+    "description": "A French and European spaceport to the northwest of Kourou in French Guiana.",
+    "country": "French Guiana",
+    "address": "Kourou, French Guiana",
+    "agency_ids": ["a2db7679-1c0d-4e56-916c-fee0a431c1fa"],
+    "avg_rating": 4.7
+  }
+]

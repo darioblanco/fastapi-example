@@ -1,0 +1,26 @@
+[
+  {
+    "id": "a2db7679-1c0d-4e56-916c-fee0a431c1fa",
+    "name": "ESA",
+    "description": "The European Space Agency is an intergovernmental organisation of 22 member states dedicated to the exploration of space.",
+    "website": "https://www.esa.int"
+  },
+  {
+    "id": "3d2bfdab-aca1-4b0c-8f62-4867aad0173f",
+    "name": "NASA",
+    "description": "The National Aeronautics and Space Administration is an independent agency of the U.S. federal government responsible for the civilian space program, as well as aeronautics and space research.",
+    "website": "https://www.nasa.gov"
+  },
+  {
+    "id": "08d21955-51b6-44e5-83d3-adebb66e7ebd",
+    "name": "Roscosmos",
+    "description": "The Roscosmos State Corporation for Space Activities, commonly known as Roscosmos, is the governmental body responsible for the space science program of the Russian Federation and general aerospace research.",
+    "website": "https://www.roscosmos.ru"
+  },
+  {
+    "id": "4d3fe717-fd2f-44f2-aa8e-8052f261c094",
+    "name": "SpaceX",
+    "description": "Space Exploration Technologies Corp., known as SpaceX, is an American aerospace manufacturer and space transportation company founded by Elon Musk in 2002.",
+    "website": "https://www.spacex.com"
+  }
+]

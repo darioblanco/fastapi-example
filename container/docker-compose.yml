@@ -1,0 +1,44 @@
+version: "3.8"
+
+networks:
+  default:
+    name: fastapi-example
+    driver: bridge
+
+volumes:
+  postgres_data:
+
+services:
+  server:
+    image: fastapi-example:latest
+    hostname: fastapi-example
+    container_name: fastapi-example-server
+    build:
+      context: ../
+      dockerfile: container/Containerfile
+    environment:
+      ALEMBIC_URI: postgresql://sampleapi:secret@postgres:5432/sampleapi
+      DATABASE_URI: postgresql+asyncpg://sampleapi:secret@postgres:5432/sampleapi
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - 8000:80
+
+  postgres:
+    image: postgres:13-alpine
+    hostname: postgres
+    container_name: fastapi-example-postgres
+    environment:
+      POSTGRES_DB: sampleapi
+      POSTGRES_USER: sampleapi
+      POSTGRES_PASSWORD: secret
+    ports:
+      - 5432:5432
+    volumes:
+      - ./dbscripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "sampleapi", "-U", "sampleapi"]
+      timeout: 45s
+      interval: 5s
+      retries: 10

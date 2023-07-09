@@ -1,0 +1,23 @@
+# Define the environment: prod, dev, testing.
+# When the variable take the following values, it has different effects:
+#
+#  - prod: it actually doesn't need to be set. It's assumed by default.
+#  - dev: it is used in the Makefile to generate a coverage.svg file
+#         when the target 'coverage' is called: make coverage
+#  - test: it is used by CI
+export ENV=dev
+
+# DB name, user and password.
+export DB_NAME=sampleapi
+export DB_USER=sampleapi
+export DB_PASS=secret
+export TESTDB_NAME=test_sampleapi
+
+# DB URI used by Alembic (in migrations/env.py) to manage DB migrations.
+export ALEMBIC_URI=postgresql://${DB_USER}:${DB_PASS}@localhost:5432/${DB_NAME}
+
+# DB URI used by the FastAPI application.
+export DATABASE_URI=postgresql+asyncpg://${DB_USER}:${DB_PASS}@localhost:5432/${DB_NAME}
+
+# DB URI used by the FastAPI application.
+export DATABASE_TEST_URI=postgresql+asyncpg://${DB_USER}:${DB_PASS}@localhost:5432/${TESTDB_NAME}
