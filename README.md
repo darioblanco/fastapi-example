@@ -27,11 +27,11 @@ The following development tooling has been chosen:
 ## Directory structure
 
 - `.github/`: folder that Github will use to provide its functionality, like CI/CD with its Github actions.
-- TODO `app/`: different composable apps to structure our REST application.
+- `app/`: different composable apps to structure our REST application.
 - `container/`: files to run the app in containers either with `docker` or `podman`.
-- TODO `fixtures/`:
+- `fixtures/`: fixture data to be loaded to the database.
 - `migrations/`: history of database migrations with `alembic`.
-- TODO `tests/`:
+- `tests/`: unit and integration tests.
 - `.editorconfig`: maintain consistent coding styles with [EditorConfig](https://editorconfig.org/)
 - `.gitignore`: specifies intentionally untracked files to ignore in git. See [gitignore](https://git-scm.com/docs/gitignore).
 - `.pre-commit-config.yaml`: configuration file to be loaded by [pre-commit](https://pre-commit.com/) for performing checks after every commit.
