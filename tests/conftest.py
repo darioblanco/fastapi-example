@@ -6,7 +6,7 @@ my_plugins = [
 
 
 def pytest_configure(config):
-    os.environ["ENV"] = "testing"
+    os.environ["ENV"] = "test"
 
     # -------------------------------------
     # Load fixtures listed in 'my_plugins'.

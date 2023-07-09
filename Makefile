@@ -5,27 +5,41 @@ SHELL := /usr/bin/env bash
 MAKEFLAGS += --no-builtin-rules
 MAKEFLAGS += --no-builtin-variables
 
-.PHONY: cleanup db-attach db-fixtures db-migrate db-run dev-run \
+.PHONY: clean db-load db-migrate dev-run \
+	postgres-attach postgres-destroy postgres-run \
+	postgres-test-attach postgres-test-destroy postgres-test-run \
 	format help init install lint \
 	pre-commit server-build server-run test
 
-cleanup: init ## cleans up all containers
+clean: init ## cleans up all containers and other temporary files
 	$(COMPOSE) -f $(COMPOSE_FILE) down
 
-db-attach: init ## attach to the local database container
-	$(COMPOSE) -f $(COMPOSE_FILE) exec postgres psql -U sampleapi -d sampleapi
-
-db-fixtures: init ## load fixture data into the db
+db-load: init ## load fixture data into the db
 	poetry run python app/scripts/load_data.py
 
 db-migrate: init ## apply any pending db migrations
 	alembic upgrade head
 
-db-run: init ## run the local database in a container
+dev-run: init postgres-run ## run the local database (in a container) and the API server (without the container)
+	poetry run python server.py
+
+postgres-attach: init ## attach to the local database container
+	$(COMPOSE) -f $(COMPOSE_FILE) exec postgres psql -U sampleapi -d sampleapi
+
+postgres-destroy: init ## run the local database in a container
+	$(COMPOSE) -f $(COMPOSE_FILE) down postgres
+
+postgres-run: init ## run the local database in a container
 	$(COMPOSE) -f $(COMPOSE_FILE) up -d postgres
 
-dev-run: init db-run ## run the local database (in a container) and the API server (without the container)
-	poetry run python server.py
+postgres-test-attach: init ## attach to the local database container for testing
+	$(COMPOSE) -f $(COMPOSE_FILE) exec postgres-test psql -U sampleapi -d test_sampleapi
+
+postgres-test-destroy: init ## destroy to the local database container for testing
+	$(COMPOSE) -f $(COMPOSE_FILE) down postgres-test
+
+postgres-test-run: init ## run the local database in a container for testing
+	$(COMPOSE) -f $(COMPOSE_FILE) up -d postgres-test
 
 format: init ## format syntax code (isort and black)
 	isort .
@@ -48,7 +62,9 @@ init: ## verify that all the required commands are already installed
 
 install: init ## install project dependencies and commit hooks
 	poetry install
-	poetry run pre-commit install
+	@if [ -z "$$CI" ]; then \
+		poetry run pre-commit install ; \
+	fi
 
 lint: init ## lint syntax code (isort and black)
 	isort -c .
@@ -64,5 +80,16 @@ server-build: init ## build the local server container
 server-run: init ## run the local server in a container
 	$(COMPOSE) -f $(COMPOSE_FILE) up -d server
 
-test: init ## run tests with coverage
+ifdef CI
+
+test: ## run tests with coverage in a CI environment
 	pytest --cov=app --cov-report term-missing --cov-report html:htmlcov tests/
+
+else
+
+test: init ## run tests with coverage in the local environment, creating and destroying the test db
+	@$(MAKE) postgres-test-run --quiet > /dev/null 2>&1
+	pytest --cov=app --cov-report term-missing --cov-report html:htmlcov tests/
+	@$(MAKE) postgres-test-destroy --quiet > /dev/null 2>&1
+
+endif

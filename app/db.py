@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
 
-if getenv("ENV") == "testing":
+if getenv("ENV") == "test":
     engine = create_async_engine(
         getenv("DATABASE_TEST_URI"), poolclass=NullPool
     )

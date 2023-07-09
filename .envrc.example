@@ -1,4 +1,4 @@
-# Define the environment: prod, dev, testing.
+# Define the environment: prod, dev, test.
 # When the variable take the following values, it has different effects:
 #
 #  - prod: it actually doesn't need to be set. It's assumed by default.
@@ -19,5 +19,5 @@ export ALEMBIC_URI=postgresql://${DB_USER}:${DB_PASS}@localhost:5432/${DB_NAME}
 # DB URI used by the FastAPI application.
 export DATABASE_URI=postgresql+asyncpg://${DB_USER}:${DB_PASS}@localhost:5432/${DB_NAME}
 
-# DB URI used by the FastAPI application.
-export DATABASE_TEST_URI=postgresql+asyncpg://${DB_USER}:${DB_PASS}@localhost:5432/${TESTDB_NAME}
+# DB URI used by the FastAPI tests.
+export DATABASE_TEST_URI=postgresql+asyncpg://${DB_USER}:${DB_PASS}@localhost:5433/${TESTDB_NAME}

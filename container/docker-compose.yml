@@ -35,10 +35,25 @@ services:
       POSTGRES_PASSWORD: secret
     ports:
       - 5432:5432
-    volumes:
-      - ./dbscripts:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD", "pg_isready", "-q", "-d", "sampleapi", "-U", "sampleapi"]
+      timeout: 45s
+      interval: 5s
+      retries: 10
+
+  postgres-test:
+    image: postgres:13-alpine
+    hostname: postgres
+    container_name: fastapi-example-postgres-test
+    environment:
+      POSTGRES_DB: test_sampleapi
+      POSTGRES_USER: sampleapi
+      POSTGRES_PASSWORD: secret
+    ports:
+      - 5433:5432
+    healthcheck:
+      test:
+        ["CMD", "pg_isready", "-q", "-d", "test_sampleapi", "-U", "sampleapi"]
       timeout: 45s
       interval: 5s
       retries: 10

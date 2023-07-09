@@ -1,0 +1,66 @@
+name: App Python
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**.py"
+      - Containerfile
+      - requirements.txt
+  pull_request:
+    paths:
+      - "**.py"
+      - Containerfile
+      - requirements.txt
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_TEST_URI: sqlite+aiosqlite:///./test.db
+      ENV: test
+    steps:
+      - name: Checkout current git repository
+        uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ inputs.pythonVersion }}
+      - name: Install requirements
+        run: make install
+      - name: Validate code style
+        run: make lint
+      - name: Test code
+        run: make test-ci
+  draft:
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - verify
+    uses: darioblanco/.github/.github/workflows/release.yaml@v1
+    secrets:
+      repoAccessToken: ${{ secrets.REPO_ACCESS_TOKEN }}
+  staging:
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - verify
+    uses: darioblanco/.github/.github/workflows/deployment.yaml@v1
+    with:
+      author: ${{ github.event.pusher.name }}
+      description: ${{ toJSON(github.event.head_commit.message) }}
+      env: staging
+      name: fastapi-example
+      ref: ${{ github.ref }}
+    secrets:
+      repoAccessToken: ${{ secrets.REPO_ACCESS_TOKEN }}
+  deploy_to_prod:
+    if: github.ref_type == 'tag'
+    needs:
+      - verify
+    uses: darioblanco/.github/.github/workflows/deployment.yaml@v1
+    with:
+      author: ${{ github.event.pusher.name }}
+      description: ${{ toJSON(github.event.head_commit.message) }}
+      env: prod
+      name: fastapi-example
+      ref: ${{ github.ref }}
+    secrets:
+      repoAccessToken: ${{ secrets.REPO_ACCESS_TOKEN }}
