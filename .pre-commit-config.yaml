@@ -5,6 +5,12 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-added-large-files
+  - repo: local
+    hooks:
+      - id: pre-commit-hook
+        name: auto format code files
+        language: script
+        entry: ./pre-commit-hook.sh
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v2.3.0
     hooks:
@@ -24,9 +30,3 @@ repos:
             style,
             test,
           ]
-  - repo: local
-    hooks:
-      - id: pre-commit-hook
-        name: auto format code files
-        language: script
-        entry: ./pre-commit-hook.sh
