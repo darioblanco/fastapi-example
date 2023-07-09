@@ -1,4 +1,4 @@
-name: App Python
+name: Test
 on:
   push:
     branches:
@@ -22,7 +22,7 @@ on:
       - .github/workflows/python.yaml
   workflow_dispatch:
 jobs:
-  verify:
+  test:
     runs-on: ubuntu-latest
     env:
       DATABASE_TEST_URI: sqlite+aiosqlite:///./test.db
@@ -47,17 +47,17 @@ jobs:
         run: make lint
       - name: Test code
         run: make test
-  draft:
+  draft_release:
     if: github.ref == 'refs/heads/main'
     needs:
-      - verify
+      - test
     uses: darioblanco/.github/.github/workflows/release.yaml@v1
     secrets:
       repoAccessToken: ${{ secrets.REPO_ACCESS_TOKEN }}
-  staging:
+  deploy_to_staging:
     if: github.ref == 'refs/heads/main'
     needs:
-      - verify
+      - test
     uses: darioblanco/.github/.github/workflows/deployment.yaml@v1
     with:
       author: ${{ github.event.pusher.name }}
@@ -70,7 +70,7 @@ jobs:
   deploy_to_prod:
     if: github.ref_type == 'tag'
     needs:
-      - verify
+      - test
     uses: darioblanco/.github/.github/workflows/deployment.yaml@v1
     with:
       author: ${{ github.event.pusher.name }}

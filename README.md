@@ -1,7 +1,8 @@
 # fastapi-example
 
+[![Container](https://github.com/darioblanco/fastapi-example/actions/workflows/container.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/container.yaml)
 [![JSON](https://github.com/darioblanco/fastapi-example/actions/workflows/json.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/json.yaml)
-[![Python](https://github.com/darioblanco/fastapi-example/actions/workflows/python.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/python.yaml)
+[![Test](https://github.com/darioblanco/fastapi-example/actions/workflows/test.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/test.yaml)
 [![YAML](https://github.com/darioblanco/fastapi-example/actions/workflows/yaml.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/yaml.yaml)
 
 This repository is a template to bootstrap a FastAPI service using PostgreSQL.
