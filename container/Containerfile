@@ -1,5 +1,7 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.11-slim
 
+LABEL org.opencontainers.image.source https://github.com/darioblanco/fastapi-example
+
 # Set the working directory to /app
 WORKDIR /app
 

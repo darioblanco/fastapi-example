@@ -11,6 +11,8 @@ on:
       - poetry.lock
       - pyproject.toml
       - .github/workflows/python.yaml
+    tags:
+      - "v*"
   pull_request:
     paths:
       - "**.py"
