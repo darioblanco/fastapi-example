@@ -1,13 +1,13 @@
 repos:
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.10.1
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
     hooks:
-      - id: isort
-        args: [-c]
-        files: \.py$
-  - repo: https://github.com/psf/black
-    rev: 22.3.0
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+  - repo: local
     hooks:
-      - id: black
-        args: [--check]
-        files: \.py$
+      - id: pre-commit-hook
+        name: auto format code files
+        language: script
+        entry: ./pre-commit-hook.sh

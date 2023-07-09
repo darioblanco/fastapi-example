@@ -1,6 +1,6 @@
 # fastapi-example
 
-![Tests](https://github.com/darioblanco/fastapi-example/actions/workflows/ci-pipeline.yml/badge.svg)
+![code](https://github.com/darioblanco/fastapi-example/actions/workflows/code.yml/badge.svg)
 [![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
 
 This repository is a template to bootstrap a FastAPI service using PostgreSQL.
@@ -20,6 +20,7 @@ The following development tooling has been chosen:
 - `docker-compose.yml` to run the app locally with other systems (e.g. postgresql).
 - `SQLAlchemy` to perform database queries, and async drivers for `Postgres` and `SQLite`.
 - `alembic` for database migrations.
+- `prettier` to enforce style in other non-python files, like YAML and JSON.
 - GitHub Action `workflows` to run CI tests, reused from [darioblanco/github-workflows](https://github.com/darioblanco/github-workflows).
 
 ## Directory structure
@@ -46,6 +47,10 @@ Before installing this project, you need the following requirements:
 
 - Python 3.11 or superior: e.g. `brew install python3`
 - Poetry: e.g. `brew install poetry`
+- Prettier: e.g. `brew install prettier`
+- Docker Compose (or Podman Compose): alternatively `podman` or `docker`
+
+These essential dependencies are verified by `make init`.
 
 Then you can perform the following commands:
 
