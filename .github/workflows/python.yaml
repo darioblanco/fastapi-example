@@ -46,7 +46,7 @@ jobs:
       - name: Validate code style
         run: make lint
       - name: Test code
-        run: make test-ci
+        run: make test
   draft:
     if: github.ref == 'refs/heads/main'
     needs:
