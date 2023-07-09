@@ -18,7 +18,7 @@ db-load: init ## load fixture data into the db
 	poetry run python app/scripts/load_data.py
 
 db-migrate: init ## apply any pending db migrations
-	alembic upgrade head
+	poetry run alembic upgrade head
 
 dev-run: init postgres-run ## run the local database (in a container) and the API server (without the container)
 	poetry run python server.py
@@ -42,8 +42,8 @@ postgres-test-run: init ## run the local database in a container for testing
 	$(COMPOSE) -f $(COMPOSE_FILE) up -d postgres-test
 
 format: init ## format syntax code (isort and black)
-	isort .
-	black .
+	poetry run isort .
+	poetry run black .
 	prettier --write "**/*.{json,yaml,yml}"
 
 help: ## list available commands
@@ -69,8 +69,8 @@ install: init ## install project dependencies and commit hooks
 	fi
 
 lint: init ## lint syntax code (isort and black)
-	isort -c .
-	black --check .
+	poetry run isort -c .
+	poetry run black --check .
 
 pre-commit: init ## run all pre-commit checks
 	poetry run pre-commit run --all-files
@@ -84,13 +84,13 @@ server-run: init ## run the local server in a container
 ifdef CI
 
 test: ## run tests with coverage in a CI environment
-	pytest --cov=app --cov-report term-missing --cov-report html:htmlcov tests/
+	poetry run pytest --cov=app --cov-report term-missing --cov-report html:htmlcov tests/
 
 else
 
 test: init ## run tests with coverage in the local environment, creating and destroying the test db
 	@$(MAKE) postgres-test-run --quiet > /dev/null 2>&1
-	pytest --cov=app --cov-report term-missing --cov-report html:htmlcov tests/
+	poetry run pytest --cov=app --cov-report term-missing --cov-report html:htmlcov tests/
 	@$(MAKE) postgres-test-destroy --quiet > /dev/null 2>&1
 
 endif
