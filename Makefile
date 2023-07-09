@@ -71,7 +71,6 @@ install: init ## install project dependencies and commit hooks
 lint: init ## lint syntax code (isort and black)
 	isort -c .
 	black --check .
-	prettier --check "**/*.{json,yaml,yml}"
 
 pre-commit: init ## run all pre-commit checks
 	poetry run pre-commit run --all-files
