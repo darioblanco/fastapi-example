@@ -26,7 +26,7 @@ services:
       - 8000:80
 
   postgres:
-    image: postgres:13-alpine
+    image: postgres:15-alpine
     hostname: postgres
     container_name: fastapi-example-postgres
     environment:
@@ -42,7 +42,7 @@ services:
       retries: 10
 
   postgres-test:
-    image: postgres:13-alpine
+    image: postgres:15-alpine
     hostname: postgres
     container_name: fastapi-example-postgres-test
     environment:
