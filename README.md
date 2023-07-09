@@ -17,7 +17,7 @@ The following development tooling has been chosen:
 
 - `pytest`, `pytest-asyncio` and `pytest-cov` to run tests.
 - `isort` and `black` to lint and format code.
-- `pdm` to ease dependency management.
+- `poetry` to ease dependency management.
 - `Containerfile` to build the app either with `podman` or `docker`.
 - `docker-compose.yml` to run the app locally with other systems (e.g. postgresql).
 - `SQLAlchemy` to perform database queries, and async drivers for `Postgres` and `SQLite`.
