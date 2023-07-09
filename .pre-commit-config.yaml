@@ -11,3 +11,22 @@ repos:
         name: auto format code files
         language: script
         entry: ./pre-commit-hook.sh
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v2.3.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args:
+          [
+            build,
+            chore,
+            ci,
+            docs,
+            feat,
+            fix,
+            perf,
+            refactor,
+            revert,
+            style,
+            test,
+          ]
