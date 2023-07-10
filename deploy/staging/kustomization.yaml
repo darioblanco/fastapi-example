@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../base
+  - postgres-deployment.yaml
+  - postgres-service.yaml
+configMapGenerator:
+  - name: fastapi-example # it will replace the configmap that it founds with this name and add a hash
+    behavior: merge
+    literals:
+      - DATABASE_URI=postgresql+asyncpg://sampleapi:secret@postgres:5432/sampleapi
+      - ENV=prod
+images:
+  - name: ghcr.io/darioblanco/fastapi-example
+    newTag: latest

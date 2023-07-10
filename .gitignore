@@ -87,3 +87,6 @@ venv.bak/
 
 # Environment variables
 .envrc
+
+# Other
+output.yaml

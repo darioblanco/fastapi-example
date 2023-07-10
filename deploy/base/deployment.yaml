@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-example
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fastapi-example
+  template:
+    metadata:
+      labels:
+        app: fastapi-example
+    spec:
+      containers:
+        - name: fastapi-example
+          image: ghcr.io/darioblanco/fastapi-example # no tag is specified here so kustomize picks it when patching
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: fastapi-example # this will be replaced by Kustomize with the generated name
+            - secretRef:
+                name: fastapi-example
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - test -f /tmp/fastapi-example
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: "512Mi"

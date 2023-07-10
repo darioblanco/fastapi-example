@@ -24,12 +24,15 @@ The following development tooling has been chosen:
 - `alembic` for database migrations.
 - `prettier` to enforce style in other non-python files, like YAML and JSON.
 - GitHub Action `workflows` to run CI tests, reused from [darioblanco/github-workflows](https://github.com/darioblanco/github-workflows).
+- [Renovate](https://docs.renovatebot.com/) for automated dependency updates.
+- [Kustomize](https://kustomize.io/) for Kubernetes deployments.
 
 ## Directory structure
 
 - `.github/`: folder that Github will use to provide its functionality, like CI/CD with its Github actions.
 - `app/`: different composable apps to structure our REST application.
 - `container/`: files to run the app in containers either with `docker` or `podman`.
+- `deploy/`: `kustomize` files and overlays for deploying to `staging` and `production` environments.
 - `fixtures/`: fixture data to be loaded to the database.
 - `migrations/`: history of database migrations with `alembic`.
 - `tests/`: unit and integration tests.
