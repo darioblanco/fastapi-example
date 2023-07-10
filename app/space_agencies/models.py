@@ -27,4 +27,4 @@ class SpaceAgency(SpaceAgencyBase):
         return value.replace(tzinfo=pytz.UTC)
 
     class Config:
-        orm_mode = True
+        from_attributes = True

@@ -6,13 +6,13 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data:
+  db_data:
 
 services:
-  server:
+  app:
     image: fastapi-example:latest
     hostname: fastapi-example
-    container_name: fastapi-example-server
+    container_name: fastapi-example-app
     build:
       context: ../
       dockerfile: container/Containerfile
@@ -20,15 +20,15 @@ services:
       ALEMBIC_URI: postgresql://sampleapi:secret@postgres:5432/sampleapi
       DATABASE_URI: postgresql+asyncpg://sampleapi:secret@postgres:5432/sampleapi
     depends_on:
-      postgres:
+      db:
         condition: service_healthy
     ports:
       - 8000:80
 
-  postgres:
+  db:
     image: postgres:15-alpine
     hostname: postgres
-    container_name: fastapi-example-postgres
+    container_name: fastapi-example-db
     environment:
       POSTGRES_DB: sampleapi
       POSTGRES_USER: sampleapi
@@ -41,10 +41,10 @@ services:
       interval: 5s
       retries: 10
 
-  postgres-test:
+  db-test:
     image: postgres:15-alpine
     hostname: postgres
-    container_name: fastapi-example-postgres-test
+    container_name: fastapi-example-db-test
     environment:
       POSTGRES_DB: test_sampleapi
       POSTGRES_USER: sampleapi

@@ -5,41 +5,38 @@ SHELL := /usr/bin/env bash
 MAKEFLAGS += --no-builtin-rules
 MAKEFLAGS += --no-builtin-variables
 
-.PHONY: clean db-load db-migrate dev-run \
-	postgres-attach postgres-destroy postgres-run \
-	postgres-test-attach postgres-test-destroy postgres-test-run \
+.PHONY: app-build app-run \
+	db-attach db-destroy db-run \
+	db-test-attach db-test-destroy db-test-run \
 	format help init install lint \
-	pre-commit server-build server-run test
+	load-fixtures migrate pre-commit run test
+
+app-build: init ## build the local app container
+	$(COMPOSE) -f $(COMPOSE_FILE) build app
+
+app-run: init ## run the local app in a container
+	$(COMPOSE) -f $(COMPOSE_FILE) up -d app
 
 clean: init ## cleans up all containers and other temporary files
 	$(COMPOSE) -f $(COMPOSE_FILE) down
 
-db-load: init ## load fixture data into the db
-	poetry run python app/scripts/load_data.py
+db-attach: init ## attach to the local database container
+	$(COMPOSE) -f $(COMPOSE_FILE) exec db psql -U sampleapi -d sampleapi
 
-db-migrate: init ## apply any pending db migrations
-	poetry run alembic upgrade head
+db-destroy: init ## run the local database in a container
+	$(COMPOSE) -f $(COMPOSE_FILE) down db
 
-dev-run: init postgres-run ## run the local database (in a container) and the API server (without the container)
-	poetry run python server.py
+db-run: init ## run the local database in a container
+	$(COMPOSE) -f $(COMPOSE_FILE) up -d db
 
-postgres-attach: init ## attach to the local database container
-	$(COMPOSE) -f $(COMPOSE_FILE) exec postgres psql -U sampleapi -d sampleapi
+db-test-attach: init ## attach to the local database container for testing
+	$(COMPOSE) -f $(COMPOSE_FILE) exec db-test psql -U sampleapi -d test_sampleapi
 
-postgres-destroy: init ## run the local database in a container
-	$(COMPOSE) -f $(COMPOSE_FILE) down postgres
+db-test-destroy: init ## destroy to the local database container for testing
+	$(COMPOSE) -f $(COMPOSE_FILE) down db-test
 
-postgres-run: init ## run the local database in a container
-	$(COMPOSE) -f $(COMPOSE_FILE) up -d postgres
-
-postgres-test-attach: init ## attach to the local database container for testing
-	$(COMPOSE) -f $(COMPOSE_FILE) exec postgres-test psql -U sampleapi -d test_sampleapi
-
-postgres-test-destroy: init ## destroy to the local database container for testing
-	$(COMPOSE) -f $(COMPOSE_FILE) down postgres-test
-
-postgres-test-run: init ## run the local database in a container for testing
-	$(COMPOSE) -f $(COMPOSE_FILE) up -d postgres-test
+db-test-run: init ## run the local database in a container for testing
+	$(COMPOSE) -f $(COMPOSE_FILE) up -d db-test
 
 format: init ## format syntax code (isort and black)
 	poetry run isort .
@@ -72,25 +69,28 @@ lint: init ## lint syntax code (isort and black)
 	poetry run isort -c .
 	poetry run black --check .
 
+load-fixtures: init ## load fixture data into the db
+	poetry run python app/scripts/load_data.py
+
+migrate: init ## apply any pending db migrations
+	poetry run alembic upgrade head
+
 pre-commit: init ## run all pre-commit checks
 	poetry run pre-commit run --all-files
 
-server-build: init ## build the local server container
-	$(COMPOSE) -f $(COMPOSE_FILE) build server
-
-server-run: init ## run the local server in a container
-	$(COMPOSE) -f $(COMPOSE_FILE) up -d server
+run: init ## run the local database (in a container) and the API server (without the container)
+	@$(MAKE) db-run --quiet > /dev/null 2>&1
+	poetry run python server.py
 
 ifdef CI
 
 test: ## run tests with coverage in a CI environment
 	poetry run pytest --cov=app --cov-report term-missing --cov-report html:htmlcov tests/
-
 else
 
 test: init ## run tests with coverage in the local environment, creating and destroying the test db
-	@$(MAKE) postgres-test-run --quiet > /dev/null 2>&1
+	@$(MAKE) db-test-run --quiet > /dev/null 2>&1
 	poetry run pytest --cov=app --cov-report term-missing --cov-report html:htmlcov tests/
-	@$(MAKE) postgres-test-destroy --quiet > /dev/null 2>&1
+	@$(MAKE) db-test-destroy --quiet > /dev/null 2>&1
 
 endif

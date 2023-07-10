@@ -139,7 +139,7 @@ To run the server locally:
 
 ```sh
   # Run the application (all dependencies are installed and env variables configured)
-  make dev-run
+  make run
 ```
 
 This will run the postgresql database (if not running already) from its container and
@@ -169,7 +169,7 @@ one with PostgreSQL and the other with the API service.
 The Makefile can build the docker image and run the compose commands:
 
 ```sh
-    make server-run
+    make app-run
 ```
 
 ## Database
@@ -177,10 +177,10 @@ The Makefile can build the docker image and run the compose commands:
 To set-up a local PostgreSQL database:
 
 ```sh
-  # Database that is used when running `make dev-run`
-  make postgres-run
+  # Database that is used when running `make run`
+  make db-run
   # Tests use a different database that is automatically created and destroyed
-  make postgres-test-run
+  make db-test-run
 ```
 
 PostgreSQL will run in the port 5432 and load all the SQL files from `container/dbscripts/*` at creation time.
@@ -188,10 +188,10 @@ PostgreSQL will run in the port 5432 and load all the SQL files from `container/
 You can attach to the PostgreSQL database:
 
 ```sh
-  # Database that is used when running `make dev-run`
-  make postgres-attach
+  # Database that is used when running `make run`
+  make db-attach
   # Tests use a different database that is automatically created and destroyed
-  make postgres-test-attach
+  make db-test-attach
 ```
 
 This allows to perform further commands in the `psql` interactive client directly in the desired database.
@@ -199,13 +199,13 @@ This allows to perform further commands in the `psql` interactive client directl
 To apply the DB migrations to create the tables, regardless of which database is used:
 
 ```sh
-    make db-migrate
+    make migrate
 ```
 
 To populate the target database with some data:
 
 ```sh
-    make db-load
+    make load-fixtures
 ```
 
 ### Bootstrap migrations
@@ -219,7 +219,7 @@ The process to set up migrations for scratch is the following:
 - Adapt `alembic.ini` (look for `sqlalchemy.url` and `[post_write_hooks]`). Make them look like the copy in this repository.
 - Adapt the file `migrations/env.py` so that it looks like our copy here.
 - Create **initial** migration with `alembic revision -m "Empty Init"`. This will add a new file in `migrations/versions/`.
-- Apply the initial migration: `alembic upgrade head` or `make db-migrate` (it will create the `alembic_version` table)
+- Apply the initial migration: `alembic upgrade head` (it will create the `alembic_version` table)
 
 ### Add a new migration
 
@@ -228,7 +228,7 @@ Once the new models and tables to the code are added into `models.py` and `dbrel
 
 - Create the DB migration that will define those changes in the DB: `alembic revision --autogenerate -m "New model."`
 - If you use `sqlalchemy_utils` (i.e.: to add `UUID4` field type), then you have to `import sqlalchemy_utils` within the migration python module, otherwise it will fail when upgrading the DB.
-- Apply the new migration: `alembic upgrade head` or `make db-migrate`.
+- Apply the new migration: `alembic upgrade head` .
 
 ## Tests
 
@@ -239,7 +239,7 @@ To run the tests:
 ```
 
 If the environment is not a CI (the `CI` environment variable is not set), the Makefile will
-automatically create the test database (`make postgres-test-run`), run the tests with coverage,
+automatically create the test database, run the tests with coverage,
 and destroy the test database at the end.
 
 Alternatively, `pytest` can be invoked directly for quick verification of your code. Make sure
