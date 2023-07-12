@@ -280,3 +280,7 @@ To update and view the sphinx documentation:
 make docs
 open docs/_build/index.html
 ```
+
+The `.github/workflows/docs.yaml` will automatically generate the documentation and push it
+into the `gh-pages` branch. This branch is picked by Github Pages to expose the documentation
+to <https://darioblanco.com/fastapi-example/>.
