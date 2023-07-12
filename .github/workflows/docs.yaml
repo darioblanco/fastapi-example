@@ -1,0 +1,41 @@
+name: Documentation
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "app/**"
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+      - name: Install requirements
+        run: make install
+      - name: Build documentation
+        run: make docs
+      - name: Deploy documentation
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ github.token }}
+          publish_dir: ./docs/_build
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_message: Update Documentation
+          external_repository: ${{ github.repository }}
+          publish_branch: gh-pages
