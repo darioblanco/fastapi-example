@@ -1,4 +1,4 @@
-name: Container
+name: container
 on:
   deployment:
   workflow_dispatch:

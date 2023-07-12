@@ -1,4 +1,4 @@
-name: JSON
+name: json
 on:
   push:
     branches:

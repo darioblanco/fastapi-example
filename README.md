@@ -1,9 +1,9 @@
 # fastapi-example
 
-[![Container](https://github.com/darioblanco/fastapi-example/actions/workflows/container.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/container.yaml)
-[![JSON](https://github.com/darioblanco/fastapi-example/actions/workflows/json.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/json.yaml)
-[![Test](https://github.com/darioblanco/fastapi-example/actions/workflows/test.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/test.yaml)
-[![YAML](https://github.com/darioblanco/fastapi-example/actions/workflows/yaml.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/yaml.yaml)
+[![container](https://github.com/darioblanco/fastapi-example/actions/workflows/container.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/container.yaml)
+[![json](https://github.com/darioblanco/fastapi-example/actions/workflows/json.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/json.yaml)
+[![test](https://github.com/darioblanco/fastapi-example/actions/workflows/test.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/test.yaml)
+[![yaml](https://github.com/darioblanco/fastapi-example/actions/workflows/yaml.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/yaml.yaml)
 
 This repository is a template to bootstrap a FastAPI service using PostgreSQL.
 You can use this repository as an example of how to structure a Standalone API service
