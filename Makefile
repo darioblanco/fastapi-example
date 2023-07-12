@@ -38,6 +38,9 @@ db-test-destroy: init ## destroy to the local database container for testing
 db-test-run: init ## run the local database in a container for testing
 	$(COMPOSE) -f $(COMPOSE_FILE) up -d db-test
 
+docs: init ## generate sphinx documentation for the code
+	poetry run sphinx-build -b html docs/ docs/_build
+
 format: init ## format syntax code (isort and black)
 	poetry run isort .
 	poetry run black .
