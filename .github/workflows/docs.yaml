@@ -7,9 +7,8 @@ on:
       - "app/**"
   workflow_dispatch:
 jobs:
-  build:
+  docs:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -32,10 +31,6 @@ jobs:
       - name: Deploy documentation
         uses: peaceiris/actions-gh-pages@v3
         with:
-          deploy_key: ${{ github.token }}
+          github_token: ${{ github.token }}
           publish_dir: ./docs/_build
-          user_name: "github-actions[bot]"
-          user_email: "github-actions[bot]@users.noreply.github.com"
-          commit_message: Update Documentation
-          external_repository: ${{ github.repository }}
-          publish_branch: gh-pages
+          commit_message: "docs: update Documentation"
