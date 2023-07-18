@@ -28,7 +28,7 @@ jobs:
               VERSION="$CLEAN_REF"
             fi
           fi
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
   build-container:
     needs: read-version
     uses: darioblanco/.github/.github/workflows/container.yaml@v1

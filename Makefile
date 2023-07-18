@@ -57,9 +57,11 @@ init: ## verify that all the required commands are already installed
 				return 1 ;\
 			fi \
 		} ;\
+		cmd kubeconform ;\
 		cmd python ;\
 		cmd poetry ;\
 		cmd prettier;\
+		cmd yq ;\
 	fi
 
 install: init ## install project dependencies and commit hooks

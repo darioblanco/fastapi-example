@@ -21,7 +21,8 @@ shell:
   - "**/*.sh"
 style:
   - ".pre-commit-config.yaml"
-  - ".pre-commit-hook.sh"
+  - "./scripts/pre-commit-hook.sh"
+  - "./scripts/validate.sh"
 test:
   - "**/test_*.py"
   - "**/tests/*"

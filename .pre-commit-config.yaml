@@ -11,7 +11,7 @@ repos:
         stages: [commit]
         name: auto format code files
         language: script
-        entry: ./pre-commit-hook.sh
+        entry: ./scripts/pre-commit-hook.sh
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v2.3.0
     hooks:
