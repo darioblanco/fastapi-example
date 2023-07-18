@@ -5,38 +5,41 @@ SHELL := /usr/bin/env bash
 MAKEFLAGS += --no-builtin-rules
 MAKEFLAGS += --no-builtin-variables
 
-.PHONY: app-build app-run \
-	db-attach db-destroy db-run \
-	db-test-attach db-test-destroy db-test-run \
+.PHONY: app-attach app-build app-run \
+	postgres-attach postgres-destroy postgres-run \
+	postgres-test-attach postgres-test-destroy postgres-test-run \
 	format help init install lint \
 	load-fixtures migrate pre-commit run test validate
+
+app-attach: init ## attach to the local app container
+	$(COMPOSE) -f $(COMPOSE_FILE) exec app sh
 
 app-build: init ## build the local app container
 	$(COMPOSE) -f $(COMPOSE_FILE) build app
 
 app-run: init ## run the local app in a container
-	$(COMPOSE) -f $(COMPOSE_FILE) up -d app
+	$(COMPOSE) -f $(COMPOSE_FILE) up -d app && $(COMPOSE) -f $(COMPOSE_FILE) logs -f app
 
 clean: init ## cleans up all containers and other temporary files
 	$(COMPOSE) -f $(COMPOSE_FILE) down
 
-db-attach: init ## attach to the local database container
-	$(COMPOSE) -f $(COMPOSE_FILE) exec db psql -U sampleapi -d sampleapi
+postgres-attach: init ## attach to the local database container
+	$(COMPOSE) -f $(COMPOSE_FILE) exec postgres psql -U sampleapi -d sampleapi
 
-db-destroy: init ## run the local database in a container
-	$(COMPOSE) -f $(COMPOSE_FILE) down db
+postgres-destroy: init ## run the local database in a container
+	$(COMPOSE) -f $(COMPOSE_FILE) down postgres
 
-db-run: init ## run the local database in a container
-	$(COMPOSE) -f $(COMPOSE_FILE) up -d db
+postgres-run: init ## run the local database in a container
+	$(COMPOSE) -f $(COMPOSE_FILE) up -d postgres
 
-db-test-attach: init ## attach to the local database container for testing
-	$(COMPOSE) -f $(COMPOSE_FILE) exec db-test psql -U sampleapi -d test_sampleapi
+postgres-test-attach: init ## attach to the local database container for testing
+	$(COMPOSE) -f $(COMPOSE_FILE) exec postgres-test psql -U sampleapi -d test_sampleapi
 
-db-test-destroy: init ## destroy to the local database container for testing
-	$(COMPOSE) -f $(COMPOSE_FILE) down db-test
+postgres-test-destroy: init ## destroy to the local database container for testing
+	$(COMPOSE) -f $(COMPOSE_FILE) down postgres-test
 
-db-test-run: init ## run the local database in a container for testing
-	$(COMPOSE) -f $(COMPOSE_FILE) up -d db-test
+postgres-test-run: init ## run the local database in a container for testing
+	$(COMPOSE) -f $(COMPOSE_FILE) up -d postgres-test
 
 docs: init ## generate sphinx documentation for the code
 	poetry run sphinx-build -b html docs/ docs/_build
@@ -84,7 +87,7 @@ pre-commit: init ## run all pre-commit checks
 	poetry run pre-commit run --all-files
 
 run: init ## run the local database (in a container) and the API server (without the container)
-	@$(MAKE) db-run --quiet > /dev/null 2>&1
+	@$(MAKE) postgres-run --quiet > /dev/null 2>&1
 	poetry run python server.py
 
 ifdef CI
@@ -95,9 +98,9 @@ test:
 else
 
 test: init ## run tests with coverage in the local environment, creating and destroying the test db
-	@$(MAKE) db-test-run --quiet > /dev/null 2>&1
+	@$(MAKE) postgres-test-run --quiet > /dev/null 2>&1
 	poetry run pytest --cov=app --cov-report term-missing --cov-report html:htmlcov tests/
-	@$(MAKE) db-test-destroy --quiet > /dev/null 2>&1
+	@$(MAKE) postgres-test-destroy --quiet > /dev/null 2>&1
 
 endif
 

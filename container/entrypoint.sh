@@ -2,7 +2,6 @@
 
 set -e
 
-# Run DB migrations.
 echo "Running DB migrations"
 alembic upgrade head || { echo 'DB migrations failed' ; exit 1; }
 
@@ -16,17 +15,6 @@ MODULE_NAME=${MODULE_NAME:-$DEFAULT_MODULE_NAME}
 VARIABLE_NAME=${VARIABLE_NAME:-app}
 export APP_MODULE=${APP_MODULE:-"$MODULE_NAME:$VARIABLE_NAME"}
 
-# If there's a gunicorn_conf.py, use it as the default
-if [ -f /app/gunicorn_conf.py ]; then
-	DEFAULT_GUNICORN_CONF=/app/gunicorn_conf.py
-elif [ -f /app/app/gunicorn_conf.py ]; then
-	DEFAULT_GUNICORN_CONF=/app/app/gunicorn_conf.py
-else
-	DEFAULT_GUNICORN_CONF=/gunicorn_conf.py
-fi
-export GUNICORN_CONF=${GUNICORN_CONF:-$DEFAULT_GUNICORN_CONF}
-export WORKER_CLASS=${WORKER_CLASS:-"uvicorn.workers.UvicornWorker"}
-
 # If there's a prestart.sh script in the /app directory or other path specified, run it before starting
 PRE_START_PATH=${PRE_START_PATH:-/app/prestart.sh}
 echo "Checking for script in $PRE_START_PATH"
@@ -38,6 +26,6 @@ else
 	echo "There is no script $PRE_START_PATH"
 fi
 
-# Start Gunicorn
-echo "Starting Gunicorn"
-exec gunicorn -k "$WORKER_CLASS" -c "$GUNICORN_CONF" "$APP_MODULE" || { echo 'Gunicorn failed to start' ; exit 1; }
+# Start Uvicorn
+echo "Starting Uvicorn"
+exec uvicorn --host 0.0.0.0 --port 8080 "${APP_MODULE}" --reload || { echo 'Uvicorn failed to start' ; exit 1; }
