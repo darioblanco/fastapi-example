@@ -9,7 +9,11 @@ from sqlalchemy import engine_from_config, pool
 config = context.config
 
 section = config.config_ini_section
-config.set_section_option(section, "ALEMBIC_URI", os.getenv("ALEMBIC_URI"))
+alembic_uri = os.getenv("ALEMBIC_URI")
+if alembic_uri is None:
+    raise EnvironmentError("ALEMBIC_URI environment variable is not set")
+config.set_section_option(section, "ALEMBIC_URI", alembic_uri)
+
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
