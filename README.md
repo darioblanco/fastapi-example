@@ -3,6 +3,7 @@
 [![container](https://github.com/darioblanco/fastapi-example/actions/workflows/container.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/container.yaml)
 [![json](https://github.com/darioblanco/fastapi-example/actions/workflows/json.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/json.yaml)
 [![test](https://github.com/darioblanco/fastapi-example/actions/workflows/test.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/test.yaml)
+[![validate](https://github.com/darioblanco/fastapi-example/actions/workflows/validate.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/validate.yaml)
 [![yaml](https://github.com/darioblanco/fastapi-example/actions/workflows/yaml.yaml/badge.svg)](https://github.com/darioblanco/fastapi-example/actions/workflows/yaml.yaml)
 
 This repository is a template to bootstrap a FastAPI service using PostgreSQL.
@@ -284,3 +285,85 @@ open docs/_build/index.html
 The `.github/workflows/docs.yaml` will automatically generate the documentation and push it
 into the `gh-pages` branch. This branch is picked by Github Pages to expose the documentation
 to <https://darioblanco.com/fastapi-example/>.
+
+## Secrets
+
+Secrets encryption is done with `Mozilla SOPS` and `age` as its backend, at client level:
+
+- [Using SOPS with age and git like a pro](https://devops.datenkollektiv.de/using-sops-with-age-and-git-like-a-pro.html)
+- [Encrypted GitOps secrets with flux and age](https://major.io/p/encrypted-gitops-secrets-with-flux-and-age/)
+
+To be able to decrypt secrets, you need to have a private file per cluster. The private file
+has to be stored in `./cluster/{clusterName}/sops.agekey`.
+
+### Generate a private key
+
+Each environment folder in `./deploy/` should have a git ignored `sops.agekey` file,
+whose public key is listed in `./.sops.yaml` with a path_regex that involves files
+that only belong to that cluster.
+
+In addition, the key used to encrypt that secret should be provisioned in the target Kubernetes
+cluster. See the [gitops repository](https://github.com/darioblanco/gitops).
+
+You should have a file there with a format like this:
+
+```sh
+$ cat sops.agekey
+# created: 2023-07-17T14:07:50+02:00
+# public key: age1qvesyd4zyqs5p40n8gr2ngjvsg6surf9e37h3xv7rm7m5lsgz5jsetg3ql
+AGE-SECRET-KEY-THIS_IS_A_SECRET_FOR_STAGING_THAT_SHOULD_NEVER_BE_PUSHED
+$ cat sops.agekey
+# created: 2023-07-17T14:07:50+02:00
+# public key: age1g2wjea9r33l6w0kr6g49yh2tgz3mx6l6dt9a8umaf6fzdkgfsemqmrzxxg
+AGE-SECRET-KEY-THIS_IS_A_SECRET_FOR_PRODUCTION_THAT_SHOULD_NEVER_BE_PUSHED
+```
+
+Normally, you would need to put an `AGE-SECRET-*` value that is shared within your team. The
+`sops.agekey` file will never be pushed to the repo as it is git ignored.
+
+### Encrypt secrets
+
+The encrypt command with `sops` is easy because the `.sops.yaml` configuration file already
+points to the age public key based on the path of the target file. As the files to be encrypted
+are always divided by environment, `sops` know which public key to use thanks to that config.
+
+In addition, the `sops` configuration defines an `encrypted_regex` so it will only encrypt the
+`data` and `stringData` attributes, that are only found in Kubernetes secrets. This can be extended
+to other secret types if desired.
+
+Therefore, to encrypt a secret resource so it can be pushed to the repo:
+
+```sh
+sops -e secret.yaml > secret.enc.yaml
+```
+
+Always make sure that the secrets you push to the repo are encrypted!
+
+It is safe to run this command because `secret-values.yaml` are always git ignored.
+
+NOTE: make format has to be run because SOPS create yaml files that do not follow the .editorconfig standard.
+You can run it manually or the git hook will.
+
+Alternatively, you can achieve the same (encryption + formatting) through the `encrypt.sh` script:
+
+```sh
+$ ./scripts/encrypt.sh secret.yaml
+secret.enc.yaml 20ms
+✅ Encrypted file saved to secret.enc.yaml
+```
+
+### Decrypt Kubernetes secrets
+
+With the environment variables loaded (`source .envrc`), you can decrypt specific attributes from the YAML:
+
+```sh
+$ sops -d --extract '["data"]' secret.yaml
+foo: ValueThatWasEncrypted
+```
+
+Alternatively, you can decrypt and store the decrypted files with this script:
+
+```sh
+$ ./scripts/decrypt.sh secret.enc.yaml
+✅ Decrypted file saved to secret.yaml
+```

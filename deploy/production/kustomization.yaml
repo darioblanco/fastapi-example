@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: fastapi-example
 resources:
   - ../base
+  - secret.enc.yaml
 configMapGenerator:
   - name: fastapi-example # it will replace the configmap that it founds with this name and add a hash
     behavior: merge
@@ -11,4 +12,3 @@ configMapGenerator:
 images:
   - name: ghcr.io/darioblanco/fastapi-example
     newTag: v0.0.3
-# TODO - provide an encrypted secret that exposes the DATABASE_URI to an external postgresql database (e.g. CloudSQL)

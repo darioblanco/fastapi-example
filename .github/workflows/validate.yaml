@@ -1,0 +1,27 @@
+name: validate
+
+on:
+  pull_request:
+    paths:
+      - "deploy/**.yaml"
+      - "deploy/**.yml"
+  push:
+    paths:
+      - "deploy/**.yaml"
+      - "deploy/**.yml"
+  workflow_dispatch:
+
+jobs:
+  manifests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup yq
+        uses: fluxcd/pkg/actions/yq@main
+      - name: Setup kubeconform
+        uses: fluxcd/pkg/actions/kubeconform@main
+      - name: Setup kustomize
+        uses: fluxcd/pkg/actions/kustomize@main
+      - name: Validate deployment manifests
+        run: make validate

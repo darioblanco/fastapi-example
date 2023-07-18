@@ -9,7 +9,7 @@ MAKEFLAGS += --no-builtin-variables
 	db-attach db-destroy db-run \
 	db-test-attach db-test-destroy db-test-run \
 	format help init install lint \
-	load-fixtures migrate pre-commit run test
+	load-fixtures migrate pre-commit run test validate
 
 app-build: init ## build the local app container
 	$(COMPOSE) -f $(COMPOSE_FILE) build app
@@ -87,7 +87,8 @@ run: init ## run the local database (in a container) and the API server (without
 
 ifdef CI
 
-test: ## run tests with coverage in a CI environment
+# run tests with coverage in a CI environment
+test:
 	poetry run pytest --cov=app --cov-report term-missing --cov-report html:htmlcov tests/
 else
 
@@ -97,3 +98,6 @@ test: init ## run tests with coverage in the local environment, creating and des
 	@$(MAKE) db-test-destroy --quiet > /dev/null 2>&1
 
 endif
+
+validate: init ## validate the kustomize resources using kubeconform
+	./scripts/validate.sh

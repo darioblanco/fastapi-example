@@ -21,3 +21,6 @@ export DATABASE_URI=postgresql+asyncpg://${DB_USER}:${DB_PASS}@localhost:5432/${
 
 # DB URI used by the FastAPI tests.
 export DATABASE_TEST_URI=postgresql+asyncpg://${DB_USER}:${DB_PASS}@localhost:5433/${TESTDB_NAME}
+
+# The list of age secret keys that allow to decrypt sops secrets locally (you can provide a file with a list of keys)
+export SOPS_AGE_KEY_FILE=./sops.agekey

@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - configmap.yaml
   - deployment.yaml
-  - secret.yaml
+  - ingress.yaml
   - service.yaml
 images:
   - name: ghcr.io/darioblanco/fastapi-example
