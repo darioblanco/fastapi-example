@@ -39,5 +39,3 @@ spec:
             requests:
               cpu: "0.2"
               memory: "256Mi"
-      imagePullSecrets:
-        - name: fastapi-example-docker

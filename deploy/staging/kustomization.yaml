@@ -3,9 +3,10 @@ kind: Kustomization
 namespace: fastapi-example
 resources:
   - ../base
+  - docker-secret.enc.yaml
+  - secret.enc.yaml
   - postgres-deployment.yaml
   - postgres-service.yaml
-  - secret.enc.yaml
 configMapGenerator:
   - name: fastapi-example # it will replace the configmap that it founds with this name and add a hash
     behavior: merge
