@@ -21,7 +21,6 @@ spec:
             - name: POSTGRES_DB
               value: sampleapi
             - name: POSTGRES_PASSWORD
-              value: secret
               valueFrom:
                 secretKeyRef:
                   name: fastapi-example
