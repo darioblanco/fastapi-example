@@ -93,4 +93,4 @@ output.yaml
 
 # Secrets
 sops.agekey
-secret.yaml
+*secret.yaml
