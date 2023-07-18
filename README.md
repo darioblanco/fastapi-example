@@ -367,3 +367,20 @@ Alternatively, you can decrypt and store the decrypted files with this script:
 $ ./scripts/decrypt.sh secret.enc.yaml
 ✅ Decrypted file saved to secret.yaml
 ```
+
+### Docker registry credentials
+
+To be able to pull the image from the Github docker registry, a `docker-registry` secret type
+has to be created in Kubernetes and linked to the deployment.
+
+The `docker-secret.enc.yaml` is created and encrypted like:
+
+```sh
+kubectl create secret docker-registry fastapi-example-docker \
+ --dry-run \
+ --docker-server=ghcr.io \
+ --docker-username=myusername \
+ --docker-password=mypassword \
+ --namespace=fastapi-example -o yaml > deploy/staging/docker-secret.yaml
+./scripts/encrypt.sh deploy/staging/docker-secret.yaml
+```
