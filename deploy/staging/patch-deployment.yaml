@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-example
+spec:
+  selector:
+    matchLabels:
+      app: fastapi-example
+  template:
+    spec:
+      containers:
+        - name: fastapi-example
+          resources:
+            limits:
+              cpu: "0.1"
+              memory: "128Mi"

@@ -14,3 +14,7 @@ configMapGenerator:
 images:
   - name: ghcr.io/darioblanco/fastapi-example
     newTag: latest
+patches:
+  - path: patch-deployment.yaml
+    target:
+      kind: Deployment
