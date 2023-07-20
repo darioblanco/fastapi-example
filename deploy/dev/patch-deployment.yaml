@@ -7,6 +7,9 @@ spec:
     matchLabels:
       env: dev
   template:
+    metadata:
+      labels:
+        env: dev
     spec:
       containers:
         - name: fastapi-example
