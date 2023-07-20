@@ -26,7 +26,7 @@ tags_metadata = [
 ]
 
 
-readyness_file_path = "/tmp/fastapi-postgres-template.txt"
+readyness_file_path = "/tmp/fastapi-example.txt"
 
 app = FastAPI(
     title="Satellites API Service",
