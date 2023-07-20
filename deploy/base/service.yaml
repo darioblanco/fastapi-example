@@ -3,8 +3,6 @@ kind: Service
 metadata:
   name: fastapi-example
 spec:
-  selector:
-    app: fastapi-example
   ports:
     - protocol: TCP
       port: 80

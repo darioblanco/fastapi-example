@@ -12,6 +12,8 @@ configMapGenerator:
     behavior: merge
     literals:
       - ENV=prod
+commonLabels:
+  environment: dev
 images:
   - name: ghcr.io/darioblanco/fastapi-example # {"$imagepolicy": "flux-system:fastapi-example:name"}
     newTag: main-46dae481-1689885151 # {"$imagepolicy": "flux-system:fastapi-example:tag"}
@@ -19,8 +21,4 @@ patches:
   - path: patch-deployment.yaml
     target:
       kind: Deployment
-      name: fastapi-example
-  - path: patch-service.yaml
-    target:
-      kind: Service
       name: fastapi-example

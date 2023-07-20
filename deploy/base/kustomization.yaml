@@ -7,3 +7,5 @@ resources:
   - service.yaml
 images:
   - name: ghcr.io/darioblanco/fastapi-example
+commonLabels:
+  app: fastapi-example
