@@ -16,7 +16,7 @@ spec:
         - name: fastapi-example
           # The image tag is automatically updated by Flux
           # See https://fluxcd.io/flux/guides/image-update/#configure-image-updates
-          image: ghcr.io/darioblanco/fastapi-example:main-fc42445e-1689880097 # {"$imagepolicy": "flux-system:fastapi-example"}
+          image: ghcr.io/darioblanco/fastapi-example:latest # {"$imagepolicy": "flux-system:fastapi-example"}
           ports:
             - containerPort: 8080
           envFrom:
