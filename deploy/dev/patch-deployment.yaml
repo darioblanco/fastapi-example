@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: fastapi-example
+      env: dev
   template:
     spec:
       containers:
