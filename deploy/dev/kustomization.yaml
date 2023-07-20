@@ -14,7 +14,7 @@ configMapGenerator:
       - ENV=prod
 images:
   - name: ghcr.io/darioblanco/fastapi-example # {"$imagepolicy": "flux-system:fastapi-example:name"}
-    newTag: main-fc42445e-1689881625 # {"$imagepolicy": "flux-system:fastapi-example:tag"}
+    newTag: main-46dae481-1689885151 # {"$imagepolicy": "flux-system:fastapi-example:tag"}
 patches:
   - path: patch-deployment.yaml
     target:
