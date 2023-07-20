@@ -29,7 +29,7 @@ spec:
               command:
                 - sh
                 - -c
-                - test -f /tmp/fastapi-example
+                - test -f /tmp/fastapi-example.txt
           livenessProbe:
             httpGet:
               path: /health

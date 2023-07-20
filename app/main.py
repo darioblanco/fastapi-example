@@ -26,7 +26,7 @@ tags_metadata = [
 ]
 
 
-readyness_file_path = "/tmp/fastapi-example.txt"
+readiness_file_path = "/tmp/fastapi-example.txt"
 
 app = FastAPI(
     title="Satellites API Service",
@@ -44,17 +44,17 @@ def startup_event():
     logging.basicConfig(
         level=os.getenv("LOG_LEVEL"), format=fmt, datefmt="%Y-%m-%d %H:%M:%S"
     )
-    readyness_file = open(readyness_file_path, "w")
+    readiness_file = open(readiness_file_path, "w")
     tstamp = datetime.now().replace(tzinfo=pytz.UTC)
     line = f"{tstamp.strftime('%Y-%m-%d %H:%M:%S %Z')}"
-    readyness_file.write(f"{line}: Service is ready.\n")
-    readyness_file.close()
+    readiness_file.write(f"{line}: Service is ready.\n")
+    readiness_file.close()
 
 
 @app.on_event("shutdown")
 def shutdown_event():
-    if os.path.exists(readyness_file_path):
-        os.remove(readyness_file_path)
+    if os.path.exists(readiness_file_path):
+        os.remove(readiness_file_path)
 
 
 app.include_router(space_agencies_router, tags=["Space Agencies"])

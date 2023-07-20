@@ -9,19 +9,19 @@ from app import main
 BASE_URL = "http://test"
 
 
-def test_startup_event_creates_readyness_file(monkeypatch):
+def test_startup_event_creates_readiness_file(monkeypatch):
     my_temp_file = tempfile.NamedTemporaryFile(delete=False)
-    monkeypatch.setattr(main, "readyness_file_path", my_temp_file.name)
+    monkeypatch.setattr(main, "readiness_file_path", my_temp_file.name)
     main.startup_event()
     data = open(my_temp_file.name, "r").read()
     assert data.index("Service is ready") > -1
 
 
-def test_shutdown_event_deletes_readyness_file(monkeypatch):
+def test_shutdown_event_deletes_readiness_file(monkeypatch):
     # Do the same as in the previous test. Check that the file exists.
     # Then call shutdown_event and check that the file does not exist.
     my_temp_file = tempfile.NamedTemporaryFile(delete=False)
-    monkeypatch.setattr(main, "readyness_file_path", my_temp_file.name)
+    monkeypatch.setattr(main, "readiness_file_path", my_temp_file.name)
     main.shutdown_event()
     assert not os.path.exists(my_temp_file.name)
 
