@@ -4,38 +4,40 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Container version to push
-        required: true
+        description: Container version to push (by default pushes the latest change)
+        default: ""
+        required: false
 jobs:
-  read-version:
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.vars.outputs.version }}
-    steps:
-      - name: Detect public version from git reference or workflow dispatch
-        id: vars
-        run: |
-          if [ "$GITHUB_EVENT_NAME" = 'workflow_dispatch' ]
-          then
-            VERSION="${{ github.event.inputs.version }}"
-          else
-            REF="${{ github.event.deployment.ref }}"
-            CLEAN_REF=${REF##*/}
-            if [[ $CLEAN_REF == 'main' ]]
-            then
-              VERSION="latest"
-            else
-              VERSION="$CLEAN_REF"
-            fi
-          fi
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-  build-container:
-    needs: read-version
+  build:
     uses: darioblanco/.github/.github/workflows/container.yaml@v1
     with:
       name: fastapi-example
       contextPath: .
       filePath: container/Containerfile
-      version: ${{ needs.read-version.outputs.version }}
+      version: ${{ github.event.inputs.version || '' }}
     secrets:
       registryPassword: ${{ secrets.REPO_ACCESS_TOKEN }}
+  update-deployment:
+    if: github.event_name == 'deployment'
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - if: success()
+        name: Successful ${{ github.event.deployment.payload.name }} deployment
+        uses: chrnorm/deployment-status@v2
+        with:
+          deployment-id: ${{ github.event.deployment.id }}
+          environment-url: ${{ github.event.deployment.payload.url }}
+          environment: ${{ github.event.deployment.payload.env }}
+          state: "success"
+          token: ${{ github.token }}
+      - if: failure()
+        name: Failed ${{ github.event.deployment.payload.name }} deployment
+        uses: chrnorm/deployment-status@v2
+        with:
+          deployment-id: ${{ github.event.deployment.id }}
+          environment-url: ${{ github.event.deployment.payload.url }}
+          environment: ${{ github.event.deployment.payload.env }}
+          state: "failure"
+          token: ${{ github.token }}
