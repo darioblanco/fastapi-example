@@ -14,7 +14,9 @@ spec:
     spec:
       containers:
         - name: fastapi-example
-          image: ghcr.io/darioblanco/fastapi-example # no tag is specified here so kustomize picks it when patching
+          # The image tag is automatically updated by Flux
+          # See https://fluxcd.io/flux/guides/image-update/#configure-image-updates
+          image: ghcr.io/darioblanco/fastapi-example:latest # {"$imagepolicy": "flux-system:fastapi-example"}
           ports:
             - containerPort: 8080
           envFrom:
