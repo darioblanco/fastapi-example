@@ -40,7 +40,7 @@ readme = "README.md"
 # Compatible Python versions
 python = ">=3.11"
 
-alembic = "^1.11.1"
+alembic = "^1.11.3"
 asyncpg = "^0.28.0"
 fastapi = "^0.100.0"
 greenlet = "^2.0.2"
