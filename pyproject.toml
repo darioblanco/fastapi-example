@@ -38,7 +38,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 # Compatible Python versions
-python = ">=3.11"
+python = ">=3.11.16"
 
 alembic = "^1.11.1"
 asyncpg = "^0.28.0"
